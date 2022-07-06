@@ -21,7 +21,7 @@ public class ConfigFileReader {
 	private Properties properties;
 	private Properties orProperties;
 	private static Properties dbProperties;
-	private static Properties TestDataProperties;
+	private static Properties TestDataProperties=null;
 	private final String propertyFilePath = System.getProperty("user.dir") + "/config/config.properties";
 	private static final String testDataFilePath = System.getProperty("user.dir") + "/config/config.properties";
 	private final String objectrepositoryFilePath = System.getProperty("user.dir")
@@ -808,9 +808,9 @@ public class ConfigFileReader {
 		return TestDataProperties.getProperty(property);
 	}
 
-	private static Properties loadPropertiesFile(String propertyFilePath) {
+	private static Properties loadPropertiesFile(String propertyFile) {
 		try {
-			File src = new File(propertyFilePath);
+			File src = new File(propertyFile);
 			Properties propObj = new Properties();
 			InputStream inputstream = new FileInputStream(src);
 			propObj.load(inputstream);
