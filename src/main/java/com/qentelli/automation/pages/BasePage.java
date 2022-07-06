@@ -61,7 +61,7 @@ public class BasePage {
 		this.world = world;
 		this.driver = driver;
 		this.waits = new Waits(world, driver);
-		loadConfig();
+		//loadConfig();
 		if (driver == null)
 			throw new AutomationIssueException("the driver is null in base page ");
 
