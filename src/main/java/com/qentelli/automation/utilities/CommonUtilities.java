@@ -111,7 +111,7 @@ public class CommonUtilities {
 	 */
 	public static String randomEmail() {
 		long todayMillis1 = Instant.now().getEpochSecond();
-        String s = randomString(10) + todayMillis1 + "@testtest.com";
+        String s = randomString(10) + todayMillis1 + "@qentelli.com";
         System.out.println("Random email: " + s);
         RuntimeProperties p = new RuntimeProperties();
         p.writeProp("EMAIL", s);

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
-<suite name="Test-method Suite1" parallel="tests" thread-count="10" data-provider-thread-count="10" >
+<suite name="Test-method Suite1">
   <listeners>
 	  <listener class-name="com.qentelli.automation.listeners.ExecutionListener" />
   </listeners>

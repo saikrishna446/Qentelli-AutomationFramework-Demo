@@ -1,4 +1,4 @@
-@SAT @en_US
+@SelfHealing @en_US
 Feature: Verify the Link in sample html Page
 
 @en_US

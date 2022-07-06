@@ -9,6 +9,7 @@ import org.openqa.selenium.By;
 
 import com.qentelli.automation.common.World;
 import com.qentelli.automation.pages.BasePage;
+import com.qentelli.automation.utilities.CommonUtilities;
 
 public class AssessmentPage extends BasePage {
 
@@ -115,9 +116,9 @@ public class AssessmentPage extends BasePage {
 		
 		// Enter the demographic details
 		verifyElementTextEquals(demographictitle, "Demographics");
-		enterText(Name, "saikrishna");
-		enterText(CompanyName, "qentelli");
-		enterText(Email, "krishna4467@qentelli.com");
+		enterText(Name, "QentelliUser");
+		enterText(CompanyName, "Qentelli"+CommonUtilities.randomString(3));
+		enterText(Email, CommonUtilities.randomEmail());
 		click(Jobtitle);
 		click(selectJob);
 		//clickByJS(agreecheckbox);
