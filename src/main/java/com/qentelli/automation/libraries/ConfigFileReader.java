@@ -808,9 +808,9 @@ public class ConfigFileReader {
 		return TestDataProperties.getProperty(property);
 	}
 
-	private static Properties loadPropertiesFile(String propertyFile) {
+	private static Properties loadPropertiesFile(String propertyFilePath) {
 		try {
-			File src = new File(propertyFile);
+			File src = new File(propertyFilePath);
 			Properties propObj = new Properties();
 			InputStream inputstream = new FileInputStream(src);
 			propObj.load(inputstream);
