@@ -16,7 +16,8 @@ public class CompanyAssessment {
 	}
 
 	@Given("User navigates to Home Page and starts the Assessment")
-	public void user_navigates_to_Home_Page_and_starts_the_Assessment() {
+	public void user_navigates_to_Home_Page_and_starts_the_Assessment() 
+	{
 		AssessmentPage assesment= new AssessmentPage(this.world);
 		assesment.navigateToUrl(ConfigFileReader.getTestDataProperty("Qentelli.Assesment.URL"));
 		assesment.windowmaxmize();

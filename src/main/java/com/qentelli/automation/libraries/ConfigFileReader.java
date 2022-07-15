@@ -21,7 +21,7 @@ public class ConfigFileReader {
 	private Properties properties;
 	private Properties orProperties;
 	private static Properties dbProperties;
-	private static Properties TestDataProperties;
+	private static Properties TestDataProperties=null;
 	private final String propertyFilePath = System.getProperty("user.dir") + "/config/config.properties";
 	private static final String testDataFilePath = System.getProperty("user.dir") + "/config/config.properties";
 	private final String objectrepositoryFilePath = System.getProperty("user.dir")
