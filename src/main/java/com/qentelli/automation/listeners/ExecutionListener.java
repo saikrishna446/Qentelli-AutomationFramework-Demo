@@ -215,6 +215,8 @@ public class ExecutionListener implements ITestListener, IAlterSuiteListener {
 //todo bhargav
 		//SendTestResultToPostgres.send("insert", RuntimeSingleton.getInstance().GetDataSentToPostgreSQL().toString());
 		SendTestResultToPostgres.send2(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
+		SendTestResultToPostgres.sendToMySQL(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
+
 		/*try {
 			// Alternative RPC to send the same data to db.
 			//URL url = new URL("http://automation.test.com:4999/insert");

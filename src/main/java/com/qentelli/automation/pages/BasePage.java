@@ -216,6 +216,16 @@ public class BasePage {
 		}
 	}
 
+	public void scrollDownJS() {
+		logger.info("Scrolling once and waiting");
+		try {
+			JavascriptExecutor js = (JavascriptExecutor) driver;
+			js.executeScript("window.scrollTo(0,500)", "");
+		} catch (Exception e) {
+			logger.info("Skipping all Exceptions while scrolling by javascript...");
+		}
+	}
+
 	// waits for elements to disappear, with time in seconds
 	public void waitForElementInvisibility(By locator, int... optionalWaitSecs) {
 		int seconds = (optionalWaitSecs.length > 0) ? optionalWaitSecs[0] : Waits.ELEMENT_VISIBILITY_WAIT;
@@ -733,7 +743,7 @@ public class BasePage {
 		logger.info("Closing the window");
 		world.driver.close();
 	}
-	
+
 	public void windowmaxmize() {
 		logger.info("window maxmize");
 		world.driver.manage().window().maximize();
@@ -1569,7 +1579,7 @@ public class BasePage {
 
 	static public void sleep(int secs) {
 		try {
-			logger.info("Sleeping for "+1 * 1000 * secs + " milliseconds") ;
+			logger.info("Sleeping for " + 1 * 1000 * secs + " milliseconds");
 			Thread.sleep(1 * 1000 * secs);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
