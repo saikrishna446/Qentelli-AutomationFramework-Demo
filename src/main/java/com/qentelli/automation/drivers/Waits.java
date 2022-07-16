@@ -16,7 +16,7 @@ public class Waits {
     private long currentImplicitSecs;
     private WebDriverWait expWait;
     private Wait<WebDriver> fluWait;
-    public static final int MIN_WAIT = 5;
+    public static final int MIN_WAIT = 1;
     public static final int MEDIUM_WAIT = 15;
     public static final int HALF_MINUTE = 30;
     public static final int LONG_WAIT = 60;

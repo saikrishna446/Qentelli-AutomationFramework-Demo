@@ -89,14 +89,17 @@ public class SendTestResultToPostgres {
             log.warn("Failed to insert results into PostgreSQL db, message is =  " + e.getMessage());
         }
     }
+
     public static void send2(JSONObject jsonDataSentToPostgreSQL) {
+         String url = "jdbc:postgresql://localhost:5432/postgres";
+         String user = "postgres";
+         String password = "superuser";
+        int set_id=0;
+        String status="Pass";
         try {
-        	DBResult.RootModel data = new Gson().fromJson(jsonDataSentToPostgreSQL.toString(), DBResult.RootModel.class);
+            DBResult.RootModel data = new Gson().fromJson(jsonDataSentToPostgreSQL.toString(), DBResult.RootModel.class);
             // DBResult.Scenario dataScenario = (DBResult.Scenario) data.scenario.get(0);
             //DBResult.Step dataStep = (DBResult.Step) data.step.get(0);
-            final String url = "jdbc:postgresql://localhost:5555/postgres";
-            final String user = "postgres";
-            final String password = "admin";
 //            Object stepArray = jsonDataSentToPostgreSQL.get("step");
 //            Object stepValue = ((JSONArray) stepArray).get(0);
 //            Object scenarioArray = jsonDataSentToPostgreSQL.get("scneario");
@@ -107,7 +110,8 @@ public class SendTestResultToPostgres {
             LinkedList<String> scenarios = new LinkedList<>();
             LinkedList<Integer> scenariIds = new LinkedList<>();
             int scenario_id = 0;
-            int set_id = Integer.parseInt(DateTimeFormatter.ofPattern("HHmmssSSS").format(LocalDateTime.now()));
+            //int set_id = Integer.parseInt(DateTimeFormatter.ofPattern("HHmmssSSS").format(LocalDateTime.now()));
+             set_id = Integer.parseInt(System.getProperty("testId"));
             int project_id = 2;
             int locale_id = 2;
             int application_id = 1;
@@ -122,6 +126,9 @@ public class SendTestResultToPostgres {
                     "duration, start_time, end_time, \"time\", by_user)\n" +
                     "\t VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?);";
 
+            if(data.failed>0){
+                status="Fail";
+            }
             try (Connection connection = DriverManager.getConnection(url, user, password);
                  PreparedStatement preparedStatement = connection.prepareStatement(Insert_Set)) {
                 preparedStatement.setInt(1, set_id);
@@ -133,7 +140,7 @@ public class SendTestResultToPostgres {
                 preparedStatement.setInt(7, env_id);
                 preparedStatement.setInt(8, run_id);
                 preparedStatement.setString(9, data.testRail);
-                preparedStatement.setString(10, data.logLink);
+                preparedStatement.setString(10, "");
                 preparedStatement.setLong(11, data.lid);
                 preparedStatement.setBoolean(12, data.mobile);
                 preparedStatement.setString(13, data.platform);
@@ -203,7 +210,7 @@ public class SendTestResultToPostgres {
             //get scenario names
             for (int i = 0; i < scenarios.size(); i++) {
                 int finalI = i;
-                
+
                 List<DBResult.Step> scenario = data.step.stream().filter((s) -> s.scenarioName.equals(scenarios.get(finalI))).collect(Collectors.toList());
                 // scenario = data.step.stream().map(p -> p.scenarioName.equals(data.scenario.get(finalI).scenarioName)).collect(Collectors.toList());
                 //}
@@ -216,8 +223,8 @@ public class SendTestResultToPostgres {
                         int step_id = Integer.parseInt(DateTimeFormatter.ofPattern("HHmmssSSS").format(LocalDateTime.now()));
                         int finalI2 = j;
                         preparedStatement3.setInt(1, step_id + CommonUtilities.getRandomNumber(10, 1000));
-                      //  List<DBResult.Scenario> scen = data.scenario.stream().filter((s) -> s.scenarioName.equals(scenario.get(finalI2).scenarioName)).collect(Collectors.toList());
-                         preparedStatement3.setInt(2, scenariIds.get(i));
+                        //  List<DBResult.Scenario> scen = data.scenario.stream().filter((s) -> s.scenarioName.equals(scenario.get(finalI2).scenarioName)).collect(Collectors.toList());
+                        preparedStatement3.setInt(2, scenariIds.get(i));
                         preparedStatement3.setLong(3, run_id);
                         preparedStatement3.setString(4, scenario.get(j).step);
                         preparedStatement3.setString(5, scenario.get(j).testRail);
@@ -239,25 +246,32 @@ public class SendTestResultToPostgres {
                     e.printStackTrace();
                     log.warn("Failed to insert results into PostgreSQL db, message is =  " + e.getMessage());
                 }
+
             }
+
         } catch (Exception e) {
 
+        }finally {
+            writeFinalStatus(url,user,password,status,set_id);
         }
     }
-    
+
     public static void sendToMySQL(JSONObject jsonDataSentToPostgreSQL) {
+        String url = "jdbc:mysql://172.16.12.35:3306/Mobe_Dev_Local?characterEncoding=latin1&useConfigs=maxPerformance";
+        String user = "mobeuser";
+        String password = "M0B@KenT1i!2O@2";
+        int set_id=0;
+        String status="Pass";
         try {
+
             DBResult.RootModel data = new Gson().fromJson(jsonDataSentToPostgreSQL.toString(), DBResult.RootModel.class);
             // DBResult.Scenario dataScenario = (DBResult.Scenario) data.scenario.get(0);
             //DBResult.Step dataStep = (DBResult.Step) data.step.get(0);
-            final String url = "jdbc:mysql://172.16.12.35:3306/Mobe_Dev_Local?characterEncoding=latin1&useConfigs=maxPerformance" ;
-            final String user = "mobeuser";
-            final String password = "M0B@KenT1i!2O@2";
             DBResult.Scenario dataScenario = null;
             LinkedList<String> scenarios = new LinkedList<>();
             LinkedList<Integer> scenariIds = new LinkedList<>();
             int scenario_id = 0;
-            int set_id = Integer.parseInt(DateTimeFormatter.ofPattern("HHmmssSSS").format(LocalDateTime.now()));
+             set_id = Integer.parseInt(System.getProperty("testId"));
             int project_id = 2;
             int locale_id = 2;
             int application_id = 1;
@@ -270,6 +284,9 @@ public class SendTestResultToPostgres {
                     "\t set_id, project_id, locale_id, application_id, bucket_id, suite_id, env_id, run_id,testrail, loglink, lid, mobile, platform, browser, failed, skipped, passed, total, " +
                     "duration, start_time, end_time, time, by_user)\n" +
                     "\t VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?);";
+            if(data.failed>0){
+                status="Fail";
+            }
             try (Connection connection = DriverManager.getConnection(url, user, password);
                  PreparedStatement preparedStatement = connection.prepareStatement(Insert_Set)) {
                 preparedStatement.setInt(1, set_id);
@@ -384,6 +401,20 @@ public class SendTestResultToPostgres {
                 }
             }
         } catch (Exception e) {
+
+        }finally {
+            writeFinalStatus(url,user,password,status,set_id);
         }
+    }
+
+    public static void writeFinalStatus(String url, String user, String password, String status, int set_id) {
+        String updateValues = "Update Mobe_Dev_Local.tb_TestSuite_Execution_Results set IsExecuted = 1 , Status =" + status + "  where TestExecution_Result_Id = " + set_id + "";
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(updateValues)) {
+            preparedStatement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
     }
 }
