@@ -20,7 +20,7 @@ public class Waits {
     public static final int MEDIUM_WAIT = 15;
     public static final int HALF_MINUTE = 30;
     public static final int LONG_WAIT = 60;
-    public static final int POLLING = 2;
+    public static final int POLLING = 1;
     public static final int ELEMENT_PRESENCE_WAIT = 100;
     public static final int ELEMENT_VISIBILITY_WAIT = 100;
     public static final int ELEMENT_CLICKABILITY_WAIT = 100;
