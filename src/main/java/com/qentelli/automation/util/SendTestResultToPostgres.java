@@ -408,7 +408,8 @@ public class SendTestResultToPostgres {
     }
 
     public static void writeFinalStatus(String url, String user, String password, String status, int set_id) {
-        String updateValues = "Update Mobe_Dev_Local.tb_TestSuite_Execution_Results set IsExecuted = 1 , Status =" + status + "  where TestExecution_Result_Id = " + set_id + "";
+        String updateValues = "Update Mobe_Dev_Local.tb_TestSuite_Execution_Results set IsExecuted = 1 , Status ='"+ status + "' where TestExecution_Result_Id = " + set_id + "";
+        System.out.println("Final query::::"+updateValues);
         try (Connection connection = DriverManager.getConnection(url, user, password);
              PreparedStatement preparedStatement = connection.prepareStatement(updateValues)) {
             preparedStatement.executeUpdate();
