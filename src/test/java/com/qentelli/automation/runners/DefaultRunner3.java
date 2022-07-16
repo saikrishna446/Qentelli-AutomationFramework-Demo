@@ -19,7 +19,7 @@ public class DefaultRunner3 extends AbstractTestNGCucumberParallelTests {
 
 	@BeforeMethod
 	public void beforeMethod() {
-	String features=System.getProperty("runid");
+	//String features=System.getProperty("runid");
 //		long id = Thread.currentThread().getId();
 //		System.out.println("Before test-method. Thread id is: " + id);
 //		System.out.println(Thread.currentThread().getName());

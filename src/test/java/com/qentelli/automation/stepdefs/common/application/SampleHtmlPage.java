@@ -31,7 +31,7 @@ private static final String filepath = System.getProperty("user.dir") + "/Sample
 	{
 
 		boolean link= world.driver.findElement(By.xpath("//a[text()='Si qua in iis corrigere voluit, deteriora fecit.']")).isDisplayed();
-		if (link) 
+		if (link)
 		{
 			world.driver.findElement(By.xpath("//a[text()='Si qua in iis corrigere voluit, deteriora fecit.']")).click();
 		} else

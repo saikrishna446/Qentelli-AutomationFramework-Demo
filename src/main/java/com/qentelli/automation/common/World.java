@@ -38,6 +38,7 @@ public class World {
 	private String customerId;
 	public String emailSubject;
 	private String browserVersion;
+	private String[] features;
 	private String browserPlatform;
 	private String platform;
 	private String platformVersion;
@@ -102,6 +103,7 @@ public class World {
 	private String orderId;
 	private Locale userLocale;
 	private boolean atgOrderFullFillerSubmitted=false;
+
 	/*
 	 * Method to get the driver based on the environment setup
 	 */
