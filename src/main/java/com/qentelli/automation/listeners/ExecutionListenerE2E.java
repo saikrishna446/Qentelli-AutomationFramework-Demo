@@ -164,6 +164,7 @@ public class ExecutionListenerE2E implements ITestListener, IAlterSuiteListener 
 
 		//SendTestResultToPostgres.send("insert", RuntimeSingleton.getInstance().GetDataSentToPostgreSQL().toString());
 		SendTestResultToPostgres.send2(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
+		//SendTestResultToPostgres.sendToMySQL(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
 		/*point = Point.measurement(getPointName()).time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
 				.addField("platform", System.getProperty("os.name"))
 				.addField("user",

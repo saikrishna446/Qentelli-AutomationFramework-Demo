@@ -14,6 +14,7 @@
     <parameter name="tunnel" value="yes" />
     <parameter name="tunnel_id" value="sc-proxy-tunnel" />
     <parameter name="environment" value="UAT" />
+    <parameter name="testId" value="111" />
 
     <!-- Browser Related Properties -->
     <!-- Should be one of the browser (chrome/safari/firefox/iexplorer/edge-->

@@ -212,9 +212,8 @@ public class ExecutionListener implements ITestListener, IAlterSuiteListener {
 		log.info("Before sending results to GetDataSentToPostgreSQL ");
 
 		// Option 2 - use service
-//todo bhargav
 		//SendTestResultToPostgres.send("insert", RuntimeSingleton.getInstance().GetDataSentToPostgreSQL().toString());
-		SendTestResultToPostgres.send2(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
+		//SendTestResultToPostgres.send2(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
 		SendTestResultToPostgres.sendToMySQL(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
 
 		/*try {
