@@ -369,8 +369,8 @@ public class SendTestResultToPostgres {
                 // scenario = data.step.stream().map(p -> p.scenarioName.equals(data.scenario.get(finalI).scenarioName)).collect(Collectors.toList());
                 //}
                 String Insert_step = "INSERT INTO step(\n" +
-                        "\t step_id,scenario_id, run_id,step_name, testrail, lid,duration, start_time, end_time, result,scenarioName)\n" +
-                        "\t VALUES (?,?,?, ?, ?, ?,?,?,?,?,?);";
+                        "\t step_id,scenario_id, run_id,step_name, testrail, lid,duration, start_time, end_time, result,scenarioName,comment)\n" +
+                        "\t VALUES (?,?,?, ?, ?, ?,?,?,?,?,?,?);";
                 try (Connection connection2 = DriverManager.getConnection(url, user, password);
                      PreparedStatement preparedStatement3 = connection2.prepareStatement(Insert_step)) {
                     for (int j = 0; j < scenario.size(); j++) {
@@ -388,6 +388,15 @@ public class SendTestResultToPostgres {
                         preparedStatement3.setLong(9, scenario.get(j).end);
                         preparedStatement3.setString(10, scenario.get(j).result);
                         preparedStatement3.setString(11, scenario.get(j).scenarioName);
+                        String failReason="";
+                        if(scenario.get(j).result.equals("FAILED")){
+                            List<DBResult.Scenario> scenarioFailed = data.scenario.stream().filter((s) -> s.scenarioName.equals(scenario.get(finalI2).scenarioName)).collect(Collectors.toList());
+                            failReason = scenarioFailed.get(0).comment;
+                            preparedStatement3.setString(12, failReason);
+                        }else {
+                            preparedStatement3.setString(12, failReason);
+                        }
+
                         System.out.println(preparedStatement3);
 //                preparedStatement2.setLong(6, dataScenario.v);
                         preparedStatement3.addBatch();
