@@ -13,10 +13,7 @@ import org.json.simple.JSONObject;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
+import java.sql.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
@@ -253,6 +250,8 @@ public class SendTestResultToPostgres {
 
         }finally {
             writeFinalStatus(url,user,password,status,set_id);
+            insertHealingData(url,user,password,set_id);
+
         }
     }
 
@@ -425,6 +424,43 @@ public class SendTestResultToPostgres {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+    public  static void insertHealingData(String url, String user, String password,int set_id) {
+        String url_he = "jdbc:postgresql://localhost:5432/postgres";
+        String user_he = "healenium_user";
+        String password_he = "YDk2nmNs4s9aCP6K";
+        String data="";
+        String uid="";
+        try {
+            //getdata from postgres
+            String SQL = "select uid,elements from public.report order by \"create_date\" desc";
+            try (Connection connection = DriverManager.getConnection(url_he, user_he, password_he);
+                 Statement stmt = connection.createStatement();
+                 ResultSet rs = stmt.executeQuery(SQL)) {
+                uid = rs.getString(1);
+                data = rs.getString(2);
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
 
+
+            String query = "INSERT IGNORE INTO `tb_Healing_Data` (`Uid`, `Result`, `TestExecution_Id`) VALUES(?,?,?);";
+            try (Connection connection = DriverManager.getConnection(url, user, password);
+                 PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+                preparedStatement.setString(0, uid);
+                preparedStatement.setString(1, data);
+                preparedStatement.setInt(2, set_id);
+                System.out.println("Healing query" + preparedStatement);
+                // Step 3: Execute the query or update query
+                preparedStatement.executeUpdate();
+            } catch (SQLException e) {
+                e.printStackTrace();
+
+            }
+
+        }catch (Exception e)
+        {
+
+        }
     }
 }
