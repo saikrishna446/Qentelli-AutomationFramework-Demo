@@ -335,7 +335,7 @@ public class SendTestResultToPostgres {
                     scenarios.add(dataScenario.scenarioName);
                     scenariIds.add(scenario_id);
                     preparedStatement2.setString(5, dataScenario.testRail);
-                    preparedStatement2.setString(6, dataScenario.featureName);
+                    preparedStatement2.setString(6, "#"+dataScenario.featureName);
                     preparedStatement2.setString(7, dataScenario.errorType);
                     preparedStatement2.setLong(8, dataScenario.lid);
                     preparedStatement2.setString(9, dataScenario.testRailLink);
