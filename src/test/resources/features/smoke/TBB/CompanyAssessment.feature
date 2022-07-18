@@ -1,11 +1,10 @@
 @Regression @en_US
-Feature: Verify the complete the Assessment
+Feature: Verify the Company Assessment
 
-@en_US
-Scenario: Verify the complete the Assessment
-
-Given User navigates to Home Page and starts the Assessment
-Then Enter the Demographic details
-And Completes the Assessment
-Then Validates the results
+  @en_US
+  Scenario:Verify the Company Assessment
+    Given User navigates to Home Page and starts the Assessment
+    Then Enter the Demographic details
+    And Completes the Assessment
+    Then Validates the results
 

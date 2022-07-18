@@ -71,6 +71,7 @@ public class RuntimeProperties {
 	}
 
 	public void writeProp(String k, String v) {
+		//context.getCurrentXmlTest().getParameter(KEY);
 		if (prop == null)
 			throw new AutomationIssueException("properties file cannot be null");
 		// 
