@@ -412,6 +412,7 @@ public class SendTestResultToPostgres {
 
         }finally {
             writeFinalStatus(url,user,password,status,set_id);
+            insertHealingData(url,user,password,set_id);
         }
     }
 
@@ -426,7 +427,7 @@ public class SendTestResultToPostgres {
         }
     }
     public  static void insertHealingData(String url, String user, String password,int set_id) {
-        String url_he = "jdbc:postgresql://localhost:5432/postgres";
+        String url_he = "jdbc:postgresql://localhost:5432/healenium";
         String user_he = "healenium_user";
         String password_he = "YDk2nmNs4s9aCP6K";
         String data="";
@@ -448,9 +449,9 @@ public class SendTestResultToPostgres {
             String query = "INSERT IGNORE INTO `tb_Healing_Data` (`Uid`, `Result`, `TestExecution_Id`) VALUES(?,?,?);";
             try (Connection connection = DriverManager.getConnection(url, user, password);
                  PreparedStatement preparedStatement = connection.prepareStatement(query)) {
-                preparedStatement.setString(0, uid);
-                preparedStatement.setString(1, data);
-                preparedStatement.setInt(2, set_id);
+                preparedStatement.setString(1, uid);
+                preparedStatement.setString(2, data);
+                preparedStatement.setInt(3, set_id);
                 System.out.println("Healing query" + preparedStatement);
                 // Step 3: Execute the query or update query
                 preparedStatement.executeUpdate();
