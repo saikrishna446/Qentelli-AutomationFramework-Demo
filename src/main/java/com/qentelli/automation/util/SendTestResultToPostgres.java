@@ -437,6 +437,7 @@ public class SendTestResultToPostgres {
             try (Connection connection = DriverManager.getConnection(url_he, user_he, password_he);
                  Statement stmt = connection.createStatement();
                  ResultSet rs = stmt.executeQuery(SQL)) {
+                rs.next();
                 uid = rs.getString(1);
                 data = rs.getString(2);
             } catch (SQLException ex) {
