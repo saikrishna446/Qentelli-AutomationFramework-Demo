@@ -19,8 +19,8 @@ private static final String filepath = System.getProperty("user.dir") + "/Sample
 		this.world = world;
 	}
 	
-	@Given("Navigate to the samle html page")
-	public void navigate_to_the_samle_html_page() 
+	@Given("Navigate to the sample html page")
+	public void navigate_to_the_sample_html_page()
 	{
 
 		world.driver.get(filepath);

@@ -1,8 +1,8 @@
 @API @en_US
-Feature: Validating Place API's
+Feature: AddPlaceAPI POST API
 
   @en_US
-  Scenario: Verify if Place is being Succesfully added using AddPlaceAPI
+  Scenario: Verify AddPlaceAPI request
     Given Add Place Payload with "AAhouse"  "English" "World cross center"
     When user calls "AddPlaceAPI" with "POST" http request
     Then the API call got success with status code 200
