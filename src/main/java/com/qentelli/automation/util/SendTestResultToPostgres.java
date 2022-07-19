@@ -88,9 +88,12 @@ public class SendTestResultToPostgres {
     }
 
     public static void send2(JSONObject jsonDataSentToPostgreSQL) {
-         String url = "jdbc:postgresql://localhost:5432/postgres";
+         String url = "jdbc:postgresql://localhost:5555/postgres";
          String user = "postgres";
-         String password = "superuser";
+         String password = "admin";
+         
+//         String user = "admin";
+//         String password = "test123";
         int set_id=0;
         String status="Pass";
         try {
