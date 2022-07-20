@@ -9,6 +9,7 @@ public class StepTestResultData extends TestResultData {
 	public int line = 1;
 	public String scenarioName;
 	public String featureName;
+	public String browser;
 
 	public StepTestResultData(String id) {
 		rid = id;
@@ -18,6 +19,8 @@ public class StepTestResultData extends TestResultData {
 	public void addRuntimeDetails(ScenarioTestResultData d) {
 		scenarioName = d.name;
 		featureName = d.featureName;
+		browser = d.browser.toString();
+
 		super.addRuntimeDetails(d);
 	}
 
@@ -39,6 +42,7 @@ public class StepTestResultData extends TestResultData {
 		logger.info(TextUtils.format("Testrail", testrail));
 		logger.info(TextUtils.format("Result", result));
 		logger.info(TextUtils.format("Repository", bucket));
+
 
 	}
 

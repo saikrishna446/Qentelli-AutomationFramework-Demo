@@ -131,6 +131,7 @@ public class Hooks {
 				data.env = d.env;
 				data.testrail = d.testrail;
 				data.bucket = d.bucket;
+				data.browser = d.browser.toString();
 				intake.add(data);
 			}
 //			logger.info(currentStepDefIndex +" SIZE:"+intake.size()) ; 
@@ -385,6 +386,8 @@ public class Hooks {
 		newStepObj.put("end", d.end);
 		newStepObj.put("line", d.line);
 		newStepObj.put("result", d.result.toString());
+		newStepObj.put("result", d.result.toString());
+		newStepObj.put("browser", d.browser);
 		JSONArray array = (JSONArray) DataSentToPostgreSQL.get("step");
 		array.add(newStepObj);
 		RuntimeSingleton.getInstance().SetDataSentToPostgreSQL(DataSentToPostgreSQL);

@@ -411,23 +411,23 @@ public class Hooks {
 
 		d.makeSureLocaleIsSetCorrectly();
         logger.info(d.getPointName());
-        point = Point.measurement(d.getPointName())
-            .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-				.addField("mobile", RuntimeSingleton.getInstance().isMobile)
-				.addField("platform", RuntimeSingleton.getInstance().platform)
-				.addField("lid", RuntimeSingleton.getInstance().getId())
-				.addField("user", RuntimeSingleton.getInstance().whoami).addField("duration", d.duration)
-				.addField("start", d.start).addField("end", d.end).addField("line", d.line).addField("runid", d.rid)
-				.addField("suite", d.suite).addField("result", d.result.toString()).addField("step", d.name)
-				.addField("application", d.application).addField("env", d.env).addField("scenario", d.scenarioName)
-				.addField("testrail", d.testrail).addField("bucket", d.bucket).addField("browser", d.browser.name())
-            .tag("result", d.result.toString()).tag("env", d.env)
-				.tag("browser", d.browser.name()).tag("application", d.application).tag("testrail", d.testrail)
-				.tag("database", d.bucket).tag("suite", d.suite).tag("locale", d.locale).build();
-
-		ResultSender.send(point, ResultSender.TABLE.STEPS);
-		d.printStep(); 
-		logger.info(TextUtils.center("<> <> step sent <> <>"));
+//        point = Point.measurement(d.getPointName())
+//            .time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+//				.addField("mobile", RuntimeSingleton.getInstance().isMobile)
+//				.addField("platform", RuntimeSingleton.getInstance().platform)
+//				.addField("lid", RuntimeSingleton.getInstance().getId())
+//				.addField("user", RuntimeSingleton.getInstance().whoami).addField("duration", d.duration)
+//				.addField("start", d.start).addField("end", d.end).addField("line", d.line).addField("runid", d.rid)
+//				.addField("suite", d.suite).addField("result", d.result.toString()).addField("step", d.name)
+//				.addField("application", d.application).addField("env", d.env).addField("scenario", d.scenarioName)
+//				.addField("testrail", d.testrail).addField("bucket", d.bucket).addField("browser", d.browser.name())
+//            .tag("result", d.result.toString()).tag("env", d.env)
+//				.tag("browser", d.browser.name()).tag("application", d.application).tag("testrail", d.testrail)
+//				.tag("database", d.bucket).tag("suite", d.suite).tag("locale", d.locale).build();
+//
+//		ResultSender.send(point, ResultSender.TABLE.STEPS);
+//		d.printStep();
+//		logger.info(TextUtils.center("<> <> step sent <> <>"));
 
 		// Construct JSON's step array data
 		JSONObject DataSentToPostgreSQL = RuntimeSingleton.getInstance().GetDataSentToPostgreSQL();

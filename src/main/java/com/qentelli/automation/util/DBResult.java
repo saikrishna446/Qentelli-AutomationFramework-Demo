@@ -73,6 +73,7 @@ Root root = om.readValue(myJsonString, Root.class); */
         public long time;
         public String runId;
         public String scenarioName;
+        public String browser;
     }
 
 
