@@ -20,7 +20,7 @@ Root root = om.readValue(myJsonString, Root.class); */
         public String platform;
         public int skipped;
         public String bucket;
-        public int duration;
+        public long duration;
         public int total;
         public String suite;
         public String application;
@@ -57,6 +57,7 @@ Root root = om.readValue(myJsonString, Root.class); */
         public int passed;
         public String scenarioName;
         public String sauceHtml;
+        public String browser;
     }
 
     public class Step{

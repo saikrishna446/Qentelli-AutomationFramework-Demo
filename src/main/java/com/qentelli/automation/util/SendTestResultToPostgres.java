@@ -88,10 +88,10 @@ public class SendTestResultToPostgres {
     }
 
     public static void send2(JSONObject jsonDataSentToPostgreSQL) {
-         String url = "jdbc:postgresql://localhost:5432/postgres";
-         String user = "postgres";
-         String password = "superuser";
-        int set_id=0;
+        String url = "jdbc:postgresql://localhost:5432/postgres";
+        String user = "postgres";
+        String password = "superuser";
+        int set_id=1;
         String status="Pass";
         try {
             DBResult.RootModel data = new Gson().fromJson(jsonDataSentToPostgreSQL.toString(), DBResult.RootModel.class);
@@ -107,8 +107,13 @@ public class SendTestResultToPostgres {
             LinkedList<String> scenarios = new LinkedList<>();
             LinkedList<Integer> scenariIds = new LinkedList<>();
             int scenario_id = 0;
-            //int set_id = Integer.parseInt(DateTimeFormatter.ofPattern("HHmmssSSS").format(LocalDateTime.now()));
-             set_id = Integer.parseInt(System.getProperty("testId"));
+            if(System.getProperty("testId")==null) {
+               // set_id=3423;
+                 set_id = Integer.parseInt(DateTimeFormatter.ofPattern("HHmmssSSS").format(LocalDateTime.now()));
+
+            }else {
+                set_id = Integer.parseInt(System.getProperty("testId"));
+            }
             int project_id = 2;
             int locale_id = 2;
             int application_id = 1;
@@ -146,7 +151,7 @@ public class SendTestResultToPostgres {
                 preparedStatement.setInt(16, data.skipped);
                 preparedStatement.setInt(17, data.passed);
                 preparedStatement.setInt(18, data.total);
-                preparedStatement.setInt(19, data.duration);
+                preparedStatement.setLong(19, data.duration);
                 preparedStatement.setLong(20, data.start);
                 preparedStatement.setLong(21, data.end);
                 preparedStatement.setLong(22, data.time);
@@ -160,8 +165,8 @@ public class SendTestResultToPostgres {
             String Insert_Scenario = "INSERT INTO public.scenario(\n" +
                     "\t scenario_id, set_id, run_id,scenario_name, testrail, feature_name, error_type, lid, testraillink, duration, start_time, " +
                     "end_time, total_steps, result, failed, skipped, passed, sauce_link, server_info, sauce_video," +
-                    " sauce_html, comment, locale_id)\n" +
-                    "\tVALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?);";
+                    " sauce_html, comment, locale_id,browser)\n" +
+                    "\tVALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?);";
 
             try (Connection connection2 = DriverManager.getConnection(url, user, password);
                  PreparedStatement preparedStatement2 = connection2.prepareStatement(Insert_Scenario)) {
@@ -172,8 +177,8 @@ public class SendTestResultToPostgres {
                     preparedStatement2.setInt(1, scenario_id);
                     preparedStatement2.setInt(2, set_id);
                     preparedStatement2.setInt(3, run_id);
-                    preparedStatement2.setString(4, dataScenario.scenarioName);
-                    scenarios.add(dataScenario.scenarioName);
+                    preparedStatement2.setString(4, data.browser+":"+dataScenario.scenarioName);
+                    scenarios.add(data.browser+":"+dataScenario.scenarioName);
                     scenariIds.add(scenario_id);
                     preparedStatement2.setString(5, dataScenario.testRail);
                     preparedStatement2.setString(6, dataScenario.featureName);
@@ -194,6 +199,7 @@ public class SendTestResultToPostgres {
                     preparedStatement2.setString(21, dataScenario.sauceHtml);
                     preparedStatement2.setString(22, dataScenario.comment);
                     preparedStatement2.setInt(23, locale_id);
+                    preparedStatement2.setString(24, dataScenario.browser);
                     preparedStatement2.execute();
 //                    System.out.println(preparedStatement2);
 //                    preparedStatement2.addBatch();
@@ -249,8 +255,8 @@ public class SendTestResultToPostgres {
         } catch (Exception e) {
 
         }finally {
-            writeFinalStatus(url,user,password,status,set_id);
-            insertHealingData(url,user,password,set_id);
+//            writeFinalStatus(url,user,password,status,set_id);
+//            insertHealingData(url,user,password,set_id);
 
         }
     }
@@ -306,7 +312,7 @@ public class SendTestResultToPostgres {
                 preparedStatement.setInt(16, data.skipped);
                 preparedStatement.setInt(17, data.passed);
                 preparedStatement.setInt(18, data.total);
-                preparedStatement.setInt(19, data.duration);
+                preparedStatement.setLong(19, data.duration);
                 preparedStatement.setLong(20, data.start);
                 preparedStatement.setLong(21, data.end);
                 preparedStatement.setLong(22, data.time);
@@ -320,8 +326,8 @@ public class SendTestResultToPostgres {
             String Insert_Scenario = "INSERT INTO scenario(\n" +
                     "\t scenario_id, set_id, run_id,scenario_name, testrail, feature_name, error_type, lid, testraillink, duration, start_time, " +
                     "end_time, total_steps, result, failed, skipped, passed, sauce_link, server_info, sauce_video," +
-                    " sauce_html, comment, locale_id)\n" +
-                    "\tVALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?);";
+                    " sauce_html, comment, locale_id,browser)\n" +
+                    "\tVALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?);";
             try (Connection connection2 = DriverManager.getConnection(url, user, password);
                  PreparedStatement preparedStatement2 = connection2.prepareStatement(Insert_Scenario)) {
                 for (int i = 0; i < data.scenario.size(); i++) {
@@ -331,7 +337,7 @@ public class SendTestResultToPostgres {
                     preparedStatement2.setInt(1, scenario_id);
                     preparedStatement2.setInt(2, set_id);
                     preparedStatement2.setInt(3, run_id);
-                    preparedStatement2.setString(4, dataScenario.scenarioName);
+                    preparedStatement2.setString(4, data.browser+": "+dataScenario.scenarioName);
                     scenarios.add(dataScenario.scenarioName);
                     scenariIds.add(scenario_id);
                     preparedStatement2.setString(5, dataScenario.testRail);
@@ -411,8 +417,8 @@ public class SendTestResultToPostgres {
         } catch (Exception e) {
 
         }finally {
-            writeFinalStatus(url,user,password,status,set_id);
-            insertHealingData(url,user,password,set_id);
+//            writeFinalStatus(url,user,password,status,set_id);
+//            insertHealingData(url,user,password,set_id);
         }
     }
 

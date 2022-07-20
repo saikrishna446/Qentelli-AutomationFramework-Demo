@@ -201,7 +201,7 @@ public class TestResultData {
 	public void checkBrowser() {
 		if (browser == null) {
 			logger.warn("Browser value not set. Using chrome as default..");
-			browser = Constants.BROWSER.CHROME;
+			browser = Constants.BROWSER.NONE;
 		}
 	}
 

@@ -315,6 +315,7 @@ public class ScenarioTestResultData extends TestResultData {
 		newScenarioObj.put("sauceVideo", sauceVideo);
 		newScenarioObj.put("sauceLink", sauceLink);
 		newScenarioObj.put("sauceHtml", sauceHtml);
+		newScenarioObj.put("browser", browser.name());
 
 		JSONArray array = (JSONArray) DataSentToPostgreSQL.get("scenario");
 		array.add(newScenarioObj);

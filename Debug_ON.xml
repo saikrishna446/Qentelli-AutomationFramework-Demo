@@ -13,12 +13,14 @@
     <parameter name="overrideLocale" value="false" />
     <parameter name="tunnel" value="yes" />
     <parameter name="tunnel_id" value="sc-proxy-tunnel" />
-    <parameter name="environment" value="UAT" />
+    <parameter name="environment" value="QA2" />
     <parameter name="testId" value="111" />
+    <parameter name="user" value="user1" />
+    <parameter name="database" value="STABILITY" />
 
     <!-- Browser Related Properties -->
     <!-- Should be one of the browser (chrome/safari/firefox/iexplorer/edge-->
-    <parameter name="browser" value="chrome" />
+    <parameter name="browser" value="firefox" />
     <parameter name="browserVersion" value="latest" />
     <parameter name="browserPlatform" value="Windows 10" />
 

@@ -145,7 +145,10 @@ public class AbstractResourceBundle extends ResourceBundle {
 		if (env == null)
 			env = System.getProperty("ENV");
 		if (env == null)
-			env = Reporter.getCurrentTestResult().getTestContext().getCurrentXmlTest().getParameter("environment");
+			//todo bhargav
+			env="QA2";
+			//env = Reporter.getCurrentTestResult().getTestContext().getCurrentXmlTest().getParameter("environment");
+
 		if (env == null) {
 			logger.info("the env parameter is null; check runtime params");
 			throw new AutomationIssueException("No env found ... ");
