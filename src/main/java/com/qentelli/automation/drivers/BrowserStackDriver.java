@@ -1,12 +1,10 @@
 package com.qentelli.automation.drivers;
 
-import java.io.File;
-import java.net.URL;
-import java.net.URLClassLoader;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.logging.Level;
+import com.qentelli.automation.common.World;
+import com.qentelli.automation.exceptions.custom.SauceException;
+import com.qentelli.automation.singletons.RuntimeSingleton;
+import com.qentelli.automation.utilities.TextUtils.ConsoleColors;
+import com.saucelabs.saucerest.SauceREST;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.MutableCapabilities;
@@ -24,26 +22,29 @@ import org.openqa.selenium.remote.CapabilityType;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariOptions;
-import com.qentelli.automation.common.World;
-import com.qentelli.automation.exceptions.custom.SauceException;
-import com.qentelli.automation.singletons.RuntimeSingleton;
-import com.qentelli.automation.utilities.TextUtils.ConsoleColors;
-import com.saucelabs.saucerest.SauceREST;
 
-public class SauceLabsDriver {
-  static Logger logger = LogManager.getLogger(SauceLabsDriver.class);
+import java.io.File;
+import java.net.URL;
+import java.net.URLClassLoader;
+import java.util.HashMap;
+import java.util.Locale;
+import java.util.ResourceBundle;
+import java.util.logging.Level;
+
+public class BrowserStackDriver {
+  static Logger logger = LogManager.getLogger(BrowserStackDriver.class);
 	private World world;
 	private ResourceBundle configLib;
 	private WebDriver driver;
 	private String USERNAME, ACCESS_KEY;
 	int profileCnt = 0;
 
-	public SauceLabsDriver(World world) {
+	public BrowserStackDriver(World world) {
 		this.world = world;
 	}
 
-	// To initialize Sauce ie driver
-	public WebDriver getSauceIEDriver() throws SauceException {
+
+	public WebDriver getBrowserStackdriver() throws SauceException {
 
 		MutableCapabilities sauceOptions = new MutableCapabilities();
 		MutableCapabilities browserOptions;
@@ -231,4 +232,5 @@ public class SauceLabsDriver {
 		}
 		return driver;
 	}
+
 }

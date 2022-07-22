@@ -9,6 +9,7 @@ public class Constants
     public enum DRIVERTYPE
     {
         SAUCE,
+        BROWSERSTACK,
         LOCAL,
         GRID
     }

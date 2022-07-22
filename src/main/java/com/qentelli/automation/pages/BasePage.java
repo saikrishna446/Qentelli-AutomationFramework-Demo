@@ -120,7 +120,7 @@ public class BasePage {
 	public void navigateToUrl(String url) {
 		long start = System.currentTimeMillis();
 		driver.get(url);
-		letMeFinishLoading();
+		//letMeFinishLoading();
 		long end = System.currentTimeMillis();
 		logger.info("Navigating to - '" + url + "' (" + (end - start) / 1000 + " secs.)");
 	}
@@ -746,7 +746,8 @@ public class BasePage {
 
 	public void windowmaxmize() {
 		logger.info("window maxmize");
-		world.driver.manage().window().maximize();
+		//todo
+		//world.driver.manage().window().maximize();
 	}
 
 	// This method closes tabs except the parent tab where actions need to be

@@ -101,15 +101,14 @@ public class ExecutionListener implements ITestListener, IAlterSuiteListener {
 		}
 
 		syncExecution(iTestContext);
-		log.info("Execution Thread: " + Thread.currentThread().getId());
-		r.writeProp("RUID", RuntimeSingleton.getInstance().runid);
-		r.writeProp("OS", System.getProperty("os.name"));
-		r.writeProp("BROWSER", System.getProperty("browser"));
+		r.writeProp("RUID", RuntimeSingleton.getInstance().runid,iTestContext);
+		r.writeProp("OS", System.getProperty("os.name"),iTestContext);
+		r.writeProp("BROWSER", System.getProperty("browser"),iTestContext);
 
-		r.writeProp("ENV", System.getProperty("environment"));
-		r.writeProp("USER", RuntimeSingleton.getInstance().whoami);
-		r.writeProp("REPO", System.getProperty("database"));
-		r.writeProp("START", RuntimeSingleton.getInstance().runid);
+		r.writeProp("ENV", System.getProperty("environment"),iTestContext);
+		r.writeProp("USER", RuntimeSingleton.getInstance().whoami,iTestContext);
+		r.writeProp("REPO", System.getProperty("database"),iTestContext);
+		r.writeProp("START", RuntimeSingleton.getInstance().runid,iTestContext);
 
 		// clear the results map; set everything we want to 0 //
 		results.put("PASSED", 0);
@@ -213,8 +212,8 @@ public class ExecutionListener implements ITestListener, IAlterSuiteListener {
 
 		// Option 2 - use service
 		//SendTestResultToPostgres.send("insert", RuntimeSingleton.getInstance().GetDataSentToPostgreSQL().toString());
-		//SendTestResultToPostgres.send2(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
-		SendTestResultToPostgres.sendToMySQL(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
+		SendTestResultToPostgres.send2(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
+		//SendTestResultToPostgres.sendToMySQL(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
 
 		/*try {
 			// Alternative RPC to send the same data to db.

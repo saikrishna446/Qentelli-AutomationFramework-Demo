@@ -60,9 +60,10 @@ public class CustomerBusinessNeeds extends BasePage {
 	@Given("user navigate to the CueQ Page")
 	public void user_navigate_to_the_CueQ_Page() {
 		// world.driver.get("https://qentelliorg.sharepoint.com/sites/CueQ/");
+		//navigateToUrl("https://qentelliorg.sharepoint.com/sites/CueQ/");
 		navigateToUrl("https://qentelliorg.sharepoint.com/sites/CueQ/");
 		// world.driver.manage().window().maximize();
-		windowmaxmize();
+//		windowmaxmize();
 	}
 
 	@Given("user navigate to Landing Page under the PROGRAM TYPES Menu")

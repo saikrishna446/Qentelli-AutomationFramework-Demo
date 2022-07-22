@@ -9,15 +9,11 @@ import java.util.Map;
 import java.util.ResourceBundle;
 import java.util.concurrent.TimeUnit;
 
+import com.qentelli.automation.drivers.*;
 import com.qentelli.automation.utilities.SHACTestDataObject;
 import com.qentelli.automation.utilities.TBBTestDataObject;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.logging.LogType;
-import com.qentelli.automation.drivers.OATSDriver;
-import com.qentelli.automation.drivers.SauceLabsDriver;
-import com.qentelli.automation.drivers.SeleniumGridDriver;
-import com.qentelli.automation.drivers.Waits;
-import com.qentelli.automation.drivers.WebDriverManager;
 import com.qentelli.automation.exceptions.custom.SauceException;
 import com.qentelli.automation.testdatafactory.config.FactoryConfig;
 import com.qentelli.automation.testdatafactory.data.FactoryData;
@@ -40,6 +36,7 @@ public class World {
 	private String browserVersion;
 	private String[] features;
 	private String browserPlatform;
+	private String osVersion;
 	private String platform;
 	private String platformVersion;
 	private String sessionId;
@@ -55,6 +52,7 @@ public class World {
 	public FactoryData factoryData;
 	WebDriverManager webDriver = new WebDriverManager(this);
 	SauceLabsDriver sauceDriver = new SauceLabsDriver(this);
+	LocalDriverFactory localDriverFactory = new LocalDriverFactory(this);
 	SeleniumGridDriver gridDriver = new SeleniumGridDriver(this);
 	OATSDriver oatsDriver = new OATSDriver(this);
 	public WebDriver driver;
@@ -110,7 +108,10 @@ public class World {
     public synchronized WebDriver getDriver() throws Exception {
 		switch (this.driverType) {
 			case SAUCE:
-				this.driver = sauceDriver.getDriver();
+				this.driver = localDriverFactory.getDriver();
+				break;
+			case BROWSERSTACK:
+				this.driver = localDriverFactory.getDriver();
 				break;
 			case GRID:
 				this.driver = gridDriver.getDriver();
@@ -140,6 +141,9 @@ public class World {
 
 	public String getBrowserPlatform() {
 		return browserPlatform;
+	}
+	public String getOsVersion() {
+		return osVersion;
 	}
 
 	public String getChromeLog() {
@@ -262,6 +266,9 @@ public class World {
 
 	public synchronized void setBrowserPlatform(String browserPlatform) {
 		this.browserPlatform = browserPlatform;
+	}
+	public synchronized void setOsVersion(String osVersion) {
+		this.osVersion = osVersion;
 	}
 
 	public synchronized void setBrowserVersion(String browserVersion) {

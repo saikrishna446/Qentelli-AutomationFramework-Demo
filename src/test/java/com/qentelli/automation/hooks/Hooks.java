@@ -22,7 +22,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import javax.imageio.ImageIO;
-
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.LogManager;
@@ -527,6 +526,7 @@ public class Hooks {
 		// Browser Related Properties
 		String browser = System.getProperty("browser");
 		String browserVersion = System.getProperty("browserVersion");
+		String osversion = System.getProperty("osversion");
 		String browserPlatform = System.getProperty("browserPlatform");
 		String environment = System.getProperty("environment");
 
@@ -548,6 +548,12 @@ public class Hooks {
 		} else {
 			world.setBrowserPlatform(Reporter.getCurrentTestResult().getTestContext().getCurrentXmlTest()
 					.getParameter("browserPlatform"));
+		}
+		if (osversion != null && !osversion.isEmpty()) {
+			world.setOsVersion(osversion);
+		} else {
+			world.setOsVersion(Reporter.getCurrentTestResult().getTestContext().getCurrentXmlTest()
+					.getParameter("osversion"));
 		}
 		if (environment != null && !environment.isEmpty()) {
 			try {

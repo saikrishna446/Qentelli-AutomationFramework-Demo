@@ -107,8 +107,15 @@ public class SendTestResultToPostgres {
             LinkedList<String> scenarios = new LinkedList<>();
             LinkedList<Integer> scenariIds = new LinkedList<>();
             int scenario_id = 0;
+            if(System.getProperty("testId")==null) {
+                // set_id=3423;
+                set_id = Integer.parseInt(DateTimeFormatter.ofPattern("HHmmssSSS").format(LocalDateTime.now()));
+
+            }else {
+                set_id = Integer.parseInt(System.getProperty("testId"));
+            }
             //int set_id = Integer.parseInt(DateTimeFormatter.ofPattern("HHmmssSSS").format(LocalDateTime.now()));
-             set_id = Integer.parseInt(System.getProperty("testId"));
+             //set_id = Integer.parseInt(System.getProperty("testId"));
             int project_id = 2;
             int locale_id = 2;
             int application_id = 1;
@@ -249,8 +256,8 @@ public class SendTestResultToPostgres {
         } catch (Exception e) {
 
         }finally {
-            writeFinalStatus(url,user,password,status,set_id);
-            insertHealingData(url,user,password,set_id);
+//            writeFinalStatus(url,user,password,status,set_id);
+//            insertHealingData(url,user,password,set_id);
 
         }
     }

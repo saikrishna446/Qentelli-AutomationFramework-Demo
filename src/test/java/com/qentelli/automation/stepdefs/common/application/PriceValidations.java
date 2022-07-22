@@ -33,7 +33,13 @@ public class PriceValidations extends Utils {
 		res = given().spec(requestSpecification()).body(data.addPlacePayLoad(string, string2, string3));
 		System.out.println(res);
 	}
-	
+	@Given("Add Place Payloadssssss with {string}  {string} {string}")
+	public void add_Place_Payloads_with(String string, String string2, String string3) throws IOException {
+		System.out.println(given().spec(requestSpecification()).body(data.addPlacePayLoad(string, string2, string3)));
+		res = given().spec(requestSpecification()).body(data.addPlacePayLoad(string, string2, string3));
+		System.out.println(res);
+	}
+
 
 	@When("user calls {string} with {string} http request")
 	public void user_calls_with_http_request(String resource, String method) {

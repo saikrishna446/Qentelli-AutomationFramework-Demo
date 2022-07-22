@@ -4,9 +4,9 @@
   <listeners>
 	  <listener class-name="com.qentelli.automation.listeners.ExecutionListener" />
   </listeners>
-    <test name="Test-method chrome" group-by-instances="true">
+    <test name="Test-method iphone" group-by-instances="true">
         <!--Driver type, Make sure to choose one of this (Sauce/Grid/Local)  don't choose whatever you need -->
-        <parameter name="driverType" value="local" />
+        <parameter name="driverType" value="sauce" />
         <parameter name="debugMode" value="false" />
         <!-- App Related Properties -->
         <parameter name="locale" value="en_US" />
@@ -27,7 +27,7 @@
 
 
         <!-- Mobile Related Properties -->
-        <parameter name="isMobile" value="false"/>
+        <parameter name="isMobile" value="true"/>
         <parameter name="mobileDeviceName" value="iPhone 13" />
         <parameter name="mobileDeviceOrientation" value="portrait" />
         <parameter name="mobilePlatformVersion" value="15.0" />
@@ -39,9 +39,9 @@
             <class name="com.qentelli.automation.runners.DefaultRunner3"/>
         </classes>
     </test>
-    <test name="Test-method firefox" group-by-instances="true">
+    <test name="Test-method android" group-by-instances="true">
         <!--Driver type, Make sure to choose one of this (Sauce/Grid/Local)  don't choose whatever you need -->
-        <parameter name="driverType" value="local" />
+        <parameter name="driverType" value="sauce" />
         <parameter name="debugMode" value="false" />
         <!-- App Related Properties -->
         <parameter name="locale" value="en_US" />
@@ -56,13 +56,13 @@
 
         <!-- Browser Related Properties -->
         <!-- Should be one of the browser (chrome/safari/firefox/iexplorer/edge-->
-        <parameter name="browser" value="firefox" />
+        <parameter name="browser" value="safari" />
         <parameter name="browserVersion" value="latest" />
-        <parameter name="browserPlatform" value="Windows" />
-        <parameter name="osversion" value="11" />
+        <parameter name="browserPlatform" value="OS X" />
+        <parameter name="osversion" value="Monterey" />
 
         <!-- Mobile Related Properties -->
-        <parameter name="isMobile" value="false"/>
+        <parameter name="isMobile" value="true"/>
         <parameter name="mobileDeviceName" value="Samsung Galaxy S20" />
         <parameter name="mobileDeviceOrientation" value="portrait" />
         <parameter name="mobilePlatformVersion" value="10.0" />
