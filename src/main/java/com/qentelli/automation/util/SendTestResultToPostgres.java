@@ -263,7 +263,8 @@ public class SendTestResultToPostgres {
     }
 
     public static void sendToMySQL(JSONObject jsonDataSentToPostgreSQL) {
-        String url = "jdbc:mysql://172.16.12.35:3306/Mobe_Dev_Local?characterEncoding=latin1&useConfigs=maxPerformance";
+        String userTenant = System.getProperty("user");
+        String url = "jdbc:mysql://172.16.12.35:3306/"+userTenant +"?characterEncoding=latin1&useConfigs=maxPerformance";
         String user = "mobeuser";
         String password = "M0B@KenT1i!2O@2";
         int set_id=0;
