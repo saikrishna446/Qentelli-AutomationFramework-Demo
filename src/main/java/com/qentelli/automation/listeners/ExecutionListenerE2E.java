@@ -157,7 +157,7 @@ public class ExecutionListenerE2E implements ITestListener, IAlterSuiteListener 
 
 		RuntimeSingleton.getInstance().SetDataSentToPostgreSQL(DataSentToPostgreSQL);
 
-		System.out.println("After set data point, JSON result = "
+		System.out.println("After set data point, JSON result = "+iTestContext.getCurrentXmlTest().getParameter("browser")
 				+ RuntimeSingleton.getInstance().GetDataSentToPostgreSQL().toString());
 
 		log.info("Before sending results to GetDataSentToPostgreSQL ");

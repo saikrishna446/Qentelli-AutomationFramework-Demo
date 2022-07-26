@@ -88,6 +88,7 @@ public class SendTestResultToPostgres {
     }
 
     public static void send2(JSONObject jsonDataSentToPostgreSQL) {
+        System.out.println("Inside call"+jsonDataSentToPostgreSQL);
          String url = "jdbc:postgresql://localhost:5432/postgres";
          String user = "postgres";
          String password = "superuser";
@@ -106,6 +107,7 @@ public class SendTestResultToPostgres {
             DBResult.Scenario dataScenario = null;
             LinkedList<String> scenarios = new LinkedList<>();
             LinkedList<Integer> scenariIds = new LinkedList<>();
+            LinkedList<Integer> browser = new LinkedList<>();
             int scenario_id = 0;
             if(System.getProperty("testId")==null) {
                 // set_id=3423;
@@ -181,6 +183,7 @@ public class SendTestResultToPostgres {
                     preparedStatement2.setInt(3, run_id);
                     preparedStatement2.setString(4, dataScenario.scenarioName);
                     scenarios.add(dataScenario.scenarioName);
+                    scenarios.add(dataScenario.browser);
                     scenariIds.add(scenario_id);
                     preparedStatement2.setString(5, dataScenario.testRail);
                     preparedStatement2.setString(6, dataScenario.featureName);
@@ -219,8 +222,8 @@ public class SendTestResultToPostgres {
                 // scenario = data.step.stream().map(p -> p.scenarioName.equals(data.scenario.get(finalI).scenarioName)).collect(Collectors.toList());
                 //}
                 String Insert_step = "INSERT INTO public.step(\n" +
-                        "\t step_id,scenario_id, run_id,step_name, testrail, lid,duration, start_time, end_time, result,\"scenarioName\")\n" +
-                        "\t VALUES (?,?,?, ?, ?, ?,?,?,?,?,?);";
+                        "\t step_id,scenario_id, run_id,step_name, testrail, lid,duration, start_time, end_time, result,\"scenarioName\",browser)\n" +
+                        "\t VALUES (?,?,?, ?, ?, ?,?,?,?,?,?,?);";
                 try (Connection connection2 = DriverManager.getConnection(url, user, password);
                      PreparedStatement preparedStatement3 = connection2.prepareStatement(Insert_step)) {
                     for (int j = 0; j < scenario.size(); j++) {
@@ -238,6 +241,7 @@ public class SendTestResultToPostgres {
                         preparedStatement3.setLong(9, scenario.get(j).end);
                         preparedStatement3.setString(10, scenario.get(j).result);
                         preparedStatement3.setString(11, scenario.get(j).scenarioName);
+                        preparedStatement3.setString(12, scenario.get(j).browser);
                         preparedStatement3.execute();
 //                preparedStatement2.setLong(6, dataScenario.v);
 //                        preparedStatement3.addBatch();

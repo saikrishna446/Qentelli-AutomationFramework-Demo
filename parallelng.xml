@@ -70,7 +70,7 @@
 
         <!-- Test case to run -->
         <classes>
-            <class name="com.qentelli.automation.runners.DefaultRunner3"/>
+            <class name="com.qentelli.automation.runners.DefaultRunner4"/>
         </classes>
     </test>
 

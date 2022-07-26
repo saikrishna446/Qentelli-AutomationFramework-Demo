@@ -130,6 +130,7 @@ public class Hooks {
 				data.env = d.env;
 				data.testrail = d.testrail;
 				data.bucket = d.bucket;
+				data.browser = d.browser.toString();
 				intake.add(data);
 			}
 //			logger.info(currentStepDefIndex +" SIZE:"+intake.size()) ; 
@@ -219,7 +220,7 @@ public class Hooks {
 
 		props.writeProp(scenDesc, scenario.getStatus().toString());
 		props.writeProp(scenDesc + "_DURATION", Long.toString(d.duration));
-		embedScreenshot(scenario);
+		//embedScreenshot(scenario);
 		if (this.world.driver != null) {
 			logger.info("Closing " + world.getBrowser() + " browser");
 			world.driver.quit();
@@ -353,21 +354,21 @@ public class Hooks {
 		if (d.name.contains("compassAPI"))
 			return;
 
-		point = Point.measurement(d.getPointName()).time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-				.addField("mobile", RuntimeSingleton.getInstance().isMobile)
-				.addField("platform", RuntimeSingleton.getInstance().platform)
-				.addField("lid", RuntimeSingleton.getInstance().getId())
-				.addField("user", RuntimeSingleton.getInstance().whoami).addField("duration", d.duration)
-				.addField("start", d.start).addField("end", d.end).addField("line", d.line).addField("runid", d.rid)
-				.addField("suite", d.suite).addField("result", d.result.toString()).addField("step", d.name)
-				.addField("application", d.application).addField("env", d.env).addField("scenario", d.scenarioName)
-				.addField("testrail", d.testrail).addField("locale", d.locale).addField("bucket", d.bucket)
-				.addField("project", d.project).addField("browser", d.browser.name()).tag("result", d.result.toString())
-				.tag("env", d.env).tag("project", d.project).tag("browser", d.browser.name())
-				.tag("application", d.application).tag("testrail", d.testrail).tag("suite", d.suite)
-				.tag("locale", d.locale).build();
-
-		ResultSender.send(point, ResultSender.TABLE.STEPS);
+//		point = Point.measurement(d.getPointName()).time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+//				.addField("mobile", RuntimeSingleton.getInstance().isMobile)
+//				.addField("platform", RuntimeSingleton.getInstance().platform)
+//				.addField("lid", RuntimeSingleton.getInstance().getId())
+//				.addField("user", RuntimeSingleton.getInstance().whoami).addField("duration", d.duration)
+//				.addField("start", d.start).addField("end", d.end).addField("line", d.line).addField("runid", d.rid)
+//				.addField("suite", d.suite).addField("result", d.result.toString()).addField("step", d.name)
+//				.addField("application", d.application).addField("env", d.env).addField("scenario", d.scenarioName)
+//				.addField("testrail", d.testrail).addField("locale", d.locale).addField("bucket", d.bucket)
+//				.addField("project", d.project).addField("browser", d.browser.name()).tag("result", d.result.toString())
+//				.tag("env", d.env).tag("project", d.project).tag("browser", d.browser.name())
+//				.tag("application", d.application).tag("testrail", d.testrail).tag("suite", d.suite)
+//				.tag("locale", d.locale).build();
+//
+//		ResultSender.send(point, ResultSender.TABLE.STEPS);
 
 		JSONObject DataSentToPostgreSQL = RuntimeSingleton.getInstance().GetDataSentToPostgreSQL();
 
@@ -384,6 +385,7 @@ public class Hooks {
 		newStepObj.put("end", d.end);
 		newStepObj.put("line", d.line);
 		newStepObj.put("result", d.result.toString());
+		newStepObj.put("browser", d.browser);
 		JSONArray array = (JSONArray) DataSentToPostgreSQL.get("step");
 		array.add(newStepObj);
 		RuntimeSingleton.getInstance().SetDataSentToPostgreSQL(DataSentToPostgreSQL);

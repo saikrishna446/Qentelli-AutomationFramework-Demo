@@ -271,22 +271,22 @@ public class ScenarioTestResultData extends TestResultData {
 		logger.info("Shot|>  " + (base64Encoded.length() > 0 ? "false" : "true"));
 		logger.info("Video|> " + sauceVideo);
 		if (testrailLink.equalsIgnoreCase("n/a")) testrailLink = new RuntimeProperties().getTestrail() ;
-		point = Point.measurement(getPointName()).time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-				.addField("mobile", RuntimeSingleton.getInstance().isMobile)
-				.addField("platform", RuntimeSingleton.getInstance().platform)
-				.addField("user", RuntimeSingleton.getInstance().whoami).addField("duration", duration)
-				.addField("start", start).addField("end", end).addField("runid", rid).addField("suite", suite)
-				.addField("lid", RuntimeSingleton.getInstance().getId()).addField("total", total).addField("env", env)
-				.addField("name", name).addField("browser", browser.name()).addField("skipped", skipped)
-				.addField("failed", failed).addField("feature", featureName).addField("passed", passed)
-				.addField("application", application).addField("testrail", testrail).addField("bucket", bucket)
-				.addField("video", sauceVideo).addField("sauce", sauceLink).addField("sauceHtml", sauceHtml)
-				.addField("result", result.toString()).addField("testlink", testrailLink)
-				.addField("undefined", undefined).addField("comment", comment).addField("serverinfo", serverInfo)
-				.addField("reason", et).addField("locale", locale).addField("project", project)
-				.tag("result", result.toString()).tag("env", env).tag("browser", browser.name()).tag("suite", suite)
-				.tag("application", application).tag("testrail", testrail).tag("error", et).tag("locale", locale)
-				.tag("project", project).build();
+//		point = Point.measurement(getPointName()).time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+//				.addField("mobile", RuntimeSingleton.getInstance().isMobile)
+//				.addField("platform", RuntimeSingleton.getInstance().platform)
+//				.addField("user", RuntimeSingleton.getInstance().whoami).addField("duration", duration)
+//				.addField("start", start).addField("end", end).addField("runid", rid).addField("suite", suite)
+//				.addField("lid", RuntimeSingleton.getInstance().getId()).addField("total", total).addField("env", env)
+//				.addField("name", name).addField("browser", browser.name()).addField("skipped", skipped)
+//				.addField("failed", failed).addField("feature", featureName).addField("passed", passed)
+//				.addField("application", application).addField("testrail", testrail).addField("bucket", bucket)
+//				.addField("video", sauceVideo).addField("sauce", sauceLink).addField("sauceHtml", sauceHtml)
+//				.addField("result", result.toString()).addField("testlink", testrailLink)
+//				.addField("undefined", undefined).addField("comment", comment).addField("serverinfo", serverInfo)
+//				.addField("reason", et).addField("locale", locale).addField("project", project)
+//				.tag("result", result.toString()).tag("env", env).tag("browser", browser.name()).tag("suite", suite)
+//				.tag("application", application).tag("testrail", testrail).tag("error", et).tag("locale", locale)
+//				.tag("project", project).build();
 //		ResultSender.send(point, ResultSender.TABLE.SCENARIOS);
 
 		JSONObject DataSentToPostgreSQL = RuntimeSingleton.getInstance().GetDataSentToPostgreSQL();
@@ -315,6 +315,7 @@ public class ScenarioTestResultData extends TestResultData {
 		newScenarioObj.put("sauceVideo", sauceVideo);
 		newScenarioObj.put("sauceLink", sauceLink);
 		newScenarioObj.put("sauceHtml", sauceHtml);
+		newScenarioObj.put("browser", browser.name());
 
 		JSONArray array = (JSONArray) DataSentToPostgreSQL.get("scenario");
 		array.add(newScenarioObj);
@@ -390,22 +391,23 @@ public class ScenarioTestResultData extends TestResultData {
 		if (hc_Scenario_Steps.containsKey(name)) {
 			HashMap<String, String> hc_Steps = hc_Scenario_Steps.get(name);
 			for (String hc_Step : hc_Steps.keySet()) {
-				Point point = Point.measurement("steps").time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-						.addField("mobile", RuntimeSingleton.getInstance().isMobile)
-						.addField("platform", RuntimeSingleton.getInstance().platform)
-						.addField("lid", RuntimeSingleton.getInstance().getId())
-						.addField("user", RuntimeSingleton.getInstance().whoami).addField("duration", duration)
-						.addField("start", start).addField("end", end).addField("line", line).addField("runid", rid)
-						.addField("suite", suite).addField("result", hc_Steps.get(hc_Step)).addField("step", hc_Step)
-						.addField("application", application).addField("env", env).addField("scenario", name)
-						.addField("testrail", testrail).addField("browser", browser.name()).tag("step", hc_Step)
-						.tag("scenario", name).tag("result", result.toString()).tag("env", env)
-						.tag("browser", browser.name()).tag("application", application).tag("feature", featureName)
-						.tag("testrail", testrail).tag("user", RuntimeSingleton.getInstance().whoami)
-						.tag("line", String.valueOf(line)).tag("suite", suite)
-						.tag("localeTag", RuntimeSingleton.getInstance().locale).build();
-
-				ResultSender.send(point);
+//				Point point = Point.measurement("steps").time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+//						.addField("mobile", RuntimeSingleton.getInstance().isMobile)
+//						.addField("platform", RuntimeSingleton.getInstance().platform)
+//						.addField("lid", RuntimeSingleton.getInstance().getId())
+//						.addField("user", RuntimeSingleton.getInstance().whoami).addField("duration", duration)
+//						.addField("start", start).addField("end", end).addField("line", line).addField("runid", rid)
+//						.addField("suite", suite).addField("result", hc_Steps.get(hc_Step)).addField("step", hc_Step)
+//						.addField("application", application).addField("env", env).addField("scenario", name)
+//						.addField("testrail", testrail).addField("browser", browser.name()).tag("step", hc_Step)
+//						.tag("scenario", name).tag("result", result.toString()).tag("env", env)
+//						.tag("browser", browser.name())
+//						.tag("application", application).tag("feature", featureName)
+//						.tag("testrail", testrail).tag("user", RuntimeSingleton.getInstance().whoami)
+//						.tag("line", String.valueOf(line)).tag("suite", suite)
+//						.tag("localeTag", RuntimeSingleton.getInstance().locale).build();
+//
+//				ResultSender.send(point);
 				logger.info(TextUtils.center("<> <> step sent <> <>"));
 				// printStep();
 				line++;

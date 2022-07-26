@@ -6,7 +6,7 @@
   </listeners>
   <test name="Test-method test" group-by-instances="true">
     <!--Driver type, Make sure to choose one of this (Sauce/Grid/Local)  don't choose whatever you need -->
-    <parameter name="driverType" value="Sauce" />
+    <parameter name="driverType" value="local" />
     <parameter name="debugMode" value="true" />
     <!-- App Related Properties -->
     <parameter name="locale" value="en_US" />
@@ -20,7 +20,7 @@
 
     <!-- Browser Related Properties -->
     <!-- Should be one of the browser (chrome/safari/firefox/iexplorer/edge-->
-    <parameter name="browser" value="chrome" />
+    <parameter name="browser" value="firefox" />
     <parameter name="browserVersion" value="latest" />
     <parameter name="browserPlatform" value="Windows" />
     <parameter name="osversion" value="11" />

@@ -165,19 +165,19 @@ public class ExecutionListener implements ITestListener, IAlterSuiteListener {
 		r.writeProp("END", String.valueOf(d.start));
 		log.info("sending point to " + d.getPointName());
 
-		point = Point.measurement(d.getPointName()).time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
-				.addField("mobile", RuntimeSingleton.getInstance().isMobile)
-				.addField("platform", RuntimeSingleton.getInstance().platform)
-				.addField("user", RuntimeSingleton.getInstance().whoami).addField("duration", d.duration)
-				.addField("lid", RuntimeSingleton.getInstance().getId()).addField("start", d.start)
-				.addField("end", d.end).addField("runid", d.rid).addField("suite", d.suite).addField("total", d.total)
-				.addField("env", d.env).addField("browser", d.browser.name()).addField("skipped", d.skipped)
-				.addField("failed", d.failed).addField("logLink", d.logLink).addField("passed", d.passed)
-				.addField("locale", d.locale).addField("application", d.application).addField("testrail", d.testrail)
-				.addField("project", d.project).addField("undefined", d.undefined).tag("env", d.env)
-				.tag("browser", d.browser.name()).tag("suite", d.suite).tag("application", d.application)
-				.tag("project", d.project).tag("locale", d.locale).build();
-		ResultSender.send(point, ResultSender.TABLE.SET);
+//		point = Point.measurement(d.getPointName()).time(System.currentTimeMillis(), TimeUnit.MILLISECONDS)
+//				.addField("mobile", RuntimeSingleton.getInstance().isMobile)
+//				.addField("platform", RuntimeSingleton.getInstance().platform)
+//				.addField("user", RuntimeSingleton.getInstance().whoami).addField("duration", d.duration)
+//				.addField("lid", RuntimeSingleton.getInstance().getId()).addField("start", d.start)
+//				.addField("end", d.end).addField("runid", d.rid).addField("suite", d.suite).addField("total", d.total)
+//				.addField("env", d.env).addField("browser", d.browser.name()).addField("skipped", d.skipped)
+//				.addField("failed", d.failed).addField("logLink", d.logLink).addField("passed", d.passed)
+//				.addField("locale", d.locale).addField("application", d.application).addField("testrail", d.testrail)
+//				.addField("project", d.project).addField("undefined", d.undefined).tag("env", d.env)
+//				.tag("browser", d.browser.name()).tag("suite", d.suite).tag("application", d.application)
+//				.tag("project", d.project).tag("locale", d.locale).build();
+//		ResultSender.send(point, ResultSender.TABLE.SET);
 
 		// gather set data and construct DataSentToPostgreSQL
 		JSONObject DataSentToPostgreSQL = RuntimeSingleton.getInstance().GetDataSentToPostgreSQL();
@@ -191,7 +191,7 @@ public class ExecutionListener implements ITestListener, IAlterSuiteListener {
 		DataSentToPostgreSQL.put("project", d.project);
 		DataSentToPostgreSQL.put("locale", d.locale);
 		DataSentToPostgreSQL.put("bucket", d.bucket);
-		DataSentToPostgreSQL.put("browser", d.browser.name());
+//		DataSentToPostgreSQL.put("browser", d.browser.name());
 		DataSentToPostgreSQL.put("testRail", d.testrail);
 		DataSentToPostgreSQL.put("lid", RuntimeSingleton.getInstance().getId());
 		DataSentToPostgreSQL.put("start", d.start);
@@ -212,8 +212,8 @@ public class ExecutionListener implements ITestListener, IAlterSuiteListener {
 
 		// Option 2 - use service
 		//SendTestResultToPostgres.send("insert", RuntimeSingleton.getInstance().GetDataSentToPostgreSQL().toString());
-		SendTestResultToPostgres.send2(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
-		//SendTestResultToPostgres.sendToMySQL(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
+		//SendTestResultToPostgres.send2(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
+		SendTestResultToPostgres.sendToMySQL(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
 
 		/*try {
 			// Alternative RPC to send the same data to db.
