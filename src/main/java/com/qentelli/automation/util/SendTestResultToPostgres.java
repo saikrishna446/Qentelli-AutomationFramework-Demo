@@ -23,6 +23,27 @@ import java.util.stream.Collectors;
 public class SendTestResultToPostgres {
 
     private static final Logger log = LogManager.getLogger(SendTestResultToPostgres.class);
+    final static int run_id = Integer.parseInt(DateTimeFormatter.ofPattern("HHmmssSSS").format(LocalDateTime.now()));
+
+    //Json insertion db details
+    static String  url = "jdbc:postgresql://localhost:5432/postgres";
+    static String user = "postgres";
+    static String password = "superuser";
+//   static String urlMysql = "jdbc:mysql://172.16.12.35:3306/Mobe_Dev_Local?characterEncoding=latin1&useConfigs=maxPerformance";
+    static String userMysql = "mobeuser";
+    static String passwordMysql = "M0B@KenT1i!2O@2";
+
+
+
+    static int set_id=0;
+    static String status="Pass";
+    static int project_id = 2;
+    static int locale_id = 2;
+    static int application_id = 1;
+    static int bucket_id = 1;
+    static int suite_id = 1;
+    static int env_id = 6;
+     static boolean insertStatus = false;
 
     public static void send(String endPointAction, String jsonDataSentToPostgreSQL) {
         try {
@@ -265,14 +286,86 @@ public class SendTestResultToPostgres {
 
         }
     }
+    public static void send2OnlySet(JSONObject jsonDataSentToPostgreSQL) {
+
+        System.out.println("Inside call" + jsonDataSentToPostgreSQL);
+
+        try {
+            DBResult.RootModel data = new Gson().fromJson(jsonDataSentToPostgreSQL.toString(), DBResult.RootModel.class);
+
+            if (System.getProperty("testId") == null) {
+                set_id = Integer.parseInt(DateTimeFormatter.ofPattern("HHmmssSSS").format(LocalDateTime.now()));
+
+            } else {
+                set_id = Integer.parseInt(System.getProperty("testId"));
+            }
+            //update the json if already inserted singleton
+                //getdata from postgres
+                String SQL = "SELECT run_id FROM public.set where run_id=" + run_id;
+                try (Connection connection = DriverManager.getConnection(url, user, password);
+                     Statement stmt = connection.createStatement();
+                     ResultSet rs = stmt.executeQuery(SQL)) {
+                    rs.next();
+                    String value = rs.getString(1);
+                    if (value != null) {
+                        insertStatus = true;
+                           String updateSql="Update  public.set set testrail='"+jsonDataSentToPostgreSQL.toString()+"' where run_id="+run_id;
+                        stmt.executeUpdate(updateSql);
+                    }
+                } catch (SQLException ex) {
+                    System.out.println(ex.getMessage());
+                }
+            if(!insertStatus) {
+                insertIntoSet(jsonDataSentToPostgreSQL);
+            }
+            } catch (Exception e) {
+                log.warn(e.getMessage());
+
+            } finally {
+//            writeFinalStatus(url,user,password,status,set_id);
+//            insertHealingData(url,user,password,set_id);
+            }
+    }
+    public static void send2OnlySetMySQL(JSONObject jsonDataSentToPostgreSQL,String userTenant) {
+        String urlMysql= "jdbc:mysql://172.16.12.35:3306/"+userTenant+"?characterEncoding=latin1&useConfigs=maxPerformance";
+        try {
+            if (System.getProperty("testId") == null) {
+                set_id = Integer.parseInt(DateTimeFormatter.ofPattern("HHmmssSSS").format(LocalDateTime.now()));
+
+            } else {
+                set_id = Integer.parseInt(System.getProperty("testId"));
+            }
+
+            //update the json if already inserted singleton
+            //getdata from postgres
+            String SQL = "SELECT run_id FROM `set` where run_id=" + run_id;
+            try (Connection connection = DriverManager.getConnection(urlMysql, userMysql, passwordMysql);
+                 Statement stmt = connection.createStatement();
+                 ResultSet rs = stmt.executeQuery(SQL)) {
+                rs.next();
+                String value = rs.getString(1);
+                if (value != null) {
+                    insertStatus = true;
+                    String updateSql="Update `set` set testrail='"+jsonDataSentToPostgreSQL.toString()+"' where run_id="+run_id;
+                    stmt.executeUpdate(updateSql);
+                }
+            } catch (SQLException ex) {
+                System.out.println(ex.getMessage());
+            }
+            if(!insertStatus) {
+               status= insertIntoSetMySql(jsonDataSentToPostgreSQL,userTenant);
+            }
+        } catch (Exception e) {
+            log.warn(e.getMessage());
+
+        }finally {
+            writeFinalStatus(urlMysql,userMysql,passwordMysql,status,set_id);
+            insertHealingData(urlMysql,userMysql,passwordMysql,set_id);
+        }
+    }
 
     public static void sendToMySQL(JSONObject jsonDataSentToPostgreSQL) {
-        String userTenant = System.getProperty("user");
-        String url = "jdbc:mysql://172.16.12.35:3306/"+userTenant +"?characterEncoding=latin1&useConfigs=maxPerformance";
-        String user = "mobeuser";
-        String password = "M0B@KenT1i!2O@2";
-        int set_id=0;
-        String status="Pass";
+
         try {
 
             DBResult.RootModel data = new Gson().fromJson(jsonDataSentToPostgreSQL.toString(), DBResult.RootModel.class);
@@ -309,7 +402,7 @@ public class SendTestResultToPostgres {
                 preparedStatement.setInt(7, env_id);
                 preparedStatement.setInt(8, run_id);
                 preparedStatement.setString(9, data.testRail);
-                preparedStatement.setString(10, data.logLink);
+                preparedStatement.setString(10, "");
                 preparedStatement.setLong(11, data.lid);
                 preparedStatement.setBoolean(12, data.mobile);
                 preparedStatement.setString(13, data.platform);
@@ -476,5 +569,91 @@ public class SendTestResultToPostgres {
         {
 
         }
+    }
+    public static void insertIntoSet(JSONObject jsonDataSentToPostgreSQL){
+        DBResult.RootModel data = new Gson().fromJson(jsonDataSentToPostgreSQL.toString(), DBResult.RootModel.class);
+        String Insert_Set = "INSERT INTO public.set(\n" +
+                "\t set_id, project_id, locale_id, application_id, bucket_id, suite_id, env_id, run_id,testrail, loglink, lid, mobile, platform, browser, failed, skipped, passed, total, " +
+                "duration, start_time, end_time, \"time\", by_user)\n" +
+                "\t VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?);";
+
+        if(data.failed>0){
+            status="Fail";
+        }
+        try (Connection connection = DriverManager.getConnection(url, user, password);
+             PreparedStatement preparedStatement = connection.prepareStatement(Insert_Set)) {
+            preparedStatement.setInt(1, set_id);
+            preparedStatement.setInt(2, project_id);
+            preparedStatement.setInt(3, locale_id);
+            preparedStatement.setInt(4, application_id);
+            preparedStatement.setInt(5, bucket_id);
+            preparedStatement.setInt(6, suite_id);
+            preparedStatement.setInt(7, env_id);
+            preparedStatement.setInt(8, run_id);
+            preparedStatement.setString(9, jsonDataSentToPostgreSQL.toString());
+            preparedStatement.setString(10, "");
+            preparedStatement.setLong(11, data.lid);
+            preparedStatement.setBoolean(12, data.mobile);
+            preparedStatement.setString(13, data.platform);
+            preparedStatement.setString(14, "default");
+            preparedStatement.setInt(15, data.failed);
+            preparedStatement.setInt(16, data.skipped);
+            preparedStatement.setInt(17, data.passed);
+            preparedStatement.setInt(18, data.total);
+            preparedStatement.setInt(19, data.duration);
+            preparedStatement.setLong(20, data.start);
+            preparedStatement.setLong(21, data.end);
+            preparedStatement.setLong(22, data.time);
+            preparedStatement.setString(23, data.user);
+            System.out.println(preparedStatement);
+            // Step 3: Execute the query or update query
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            log.warn("Failed to insert results into PostgreSQL db, message is =  " + e.getMessage());
+        }
+    }
+
+    public  static  String insertIntoSetMySql(JSONObject jsonDataSentToPostgreSQL,String userTenant){
+        String urlMysql= "jdbc:mysql://172.16.12.35:3306/"+userTenant+"?characterEncoding=latin1&useConfigs=maxPerformance";
+        DBResult.RootModel data = new Gson().fromJson(jsonDataSentToPostgreSQL.toString(), DBResult.RootModel.class);
+        String Insert_Set = "INSERT INTO `set`(\n" +
+                "\t set_id, project_id, locale_id, application_id, bucket_id, suite_id, env_id, run_id,testrail, loglink, lid, mobile, platform, browser, failed, skipped, passed, total, " +
+                "duration, start_time, end_time, time, by_user)\n" +
+                "\t VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?,?,?,?,?,?,?,?,?);";
+        if(data.failed>0){
+            status="Fail";
+        }
+        try (Connection connection = DriverManager.getConnection(urlMysql, userMysql, passwordMysql);
+             PreparedStatement preparedStatement = connection.prepareStatement(Insert_Set)) {
+            preparedStatement.setInt(1, set_id);
+            preparedStatement.setInt(2, project_id);
+            preparedStatement.setInt(3, locale_id);
+            preparedStatement.setInt(4, application_id);
+            preparedStatement.setInt(5, bucket_id);
+            preparedStatement.setInt(6, suite_id);
+            preparedStatement.setInt(7, env_id);
+            preparedStatement.setInt(8, run_id);
+            preparedStatement.setString(9, jsonDataSentToPostgreSQL.toString());
+            preparedStatement.setString(10, "");
+            preparedStatement.setLong(11, data.lid);
+            preparedStatement.setBoolean(12, data.mobile);
+            preparedStatement.setString(13, data.platform);
+            preparedStatement.setString(14, "default");
+            preparedStatement.setInt(15, data.failed);
+            preparedStatement.setInt(16, data.skipped);
+            preparedStatement.setInt(17, data.passed);
+            preparedStatement.setInt(18, data.total);
+            preparedStatement.setInt(19, data.duration);
+            preparedStatement.setLong(20, data.start);
+            preparedStatement.setLong(21, data.end);
+            preparedStatement.setLong(22, data.time);
+            preparedStatement.setString(23, data.user);
+            System.out.println(preparedStatement);
+            // Step 3: Execute the query or update query
+            preparedStatement.executeUpdate();
+        } catch (Exception e) {
+            log.warn("Failed to insert results into MYSQL db, message is =  " + e.getMessage());
+        }
+        return status;
     }
 }

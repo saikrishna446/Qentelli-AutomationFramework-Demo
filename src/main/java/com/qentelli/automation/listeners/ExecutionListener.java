@@ -122,8 +122,8 @@ public class ExecutionListener implements ITestListener, IAlterSuiteListener {
 	public void onFinish(ITestContext iTestContext) {
 		log.info("ON FINISH");
 		RuntimeSingleton.getInstance().setData.end = System.currentTimeMillis();
-		duration = RuntimeSingleton.getInstance().setData.end - duration;
-		RuntimeSingleton.getInstance().setData.duration = duration;
+		long durationFinal = RuntimeSingleton.getInstance().setData.end - duration;
+		RuntimeSingleton.getInstance().setData.duration = durationFinal;
 		processEventFile();
 		// fixes reporting issue w/ new thread implementation
 		RuntimeSingleton.getInstance().setData.passed = results.get("PASSED");
@@ -137,11 +137,11 @@ public class ExecutionListener implements ITestListener, IAlterSuiteListener {
 
 		log.info("Total " + RuntimeSingleton.getInstance().setData.total);
 
-		sendRunStats(RuntimeSingleton.getInstance().setData);
+		sendRunStats(RuntimeSingleton.getInstance().setData,iTestContext);
 		log.info("END FINISH");
 	}
 
-	private void sendRunStats(SetTestResultData d) {
+	private void sendRunStats(SetTestResultData d,ITestContext iTestContextdata) {
 		d.checkBrowser();
 		d.syncTagData();
 		// let's default the suite/set to Mobile for mobile runs to make reporting
@@ -210,10 +210,18 @@ public class ExecutionListener implements ITestListener, IAlterSuiteListener {
 
 		log.info("Before sending results to GetDataSentToPostgreSQL ");
 
+
+		String userTenant = System.getProperty("user");
+		if(userTenant==null){
+			userTenant=iTestContextdata.getCurrentXmlTest().getParameter("user");
+		}
 		// Option 2 - use service
 		//SendTestResultToPostgres.send("insert", RuntimeSingleton.getInstance().GetDataSentToPostgreSQL().toString());
+		//send to postgres db
 		//SendTestResultToPostgres.send2(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
-		SendTestResultToPostgres.sendToMySQL(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
+//		SendTestResultToPostgres.send2OnlySet(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
+		SendTestResultToPostgres.send2OnlySetMySQL(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL(),userTenant);
+		//SendTestResultToPostgres.sendToMySQL(RuntimeSingleton.getInstance().GetDataSentToPostgreSQL());
 
 		/*try {
 			// Alternative RPC to send the same data to db.
